@@ -1,0 +1,51 @@
+booking_id,cancellation_date,cancellation_reason,refund_amount
+BOOK-1,2024-03-05,Change in travel plans,78.52
+BOOK-2,2024-02-17,Health issue,65.29
+BOOK-3,2024-01-22,Emergency,82.14
+BOOK-4,2024-02-09,Booking mistake,56.73
+BOOK-5,2024-03-12,Unforeseen circumstances,70.91
+BOOK-6,2024-01-05,Change in travel plans,89.47
+BOOK-7,2024-02-11,Emergency,74.35
+BOOK-8,2024-03-20,Change in travel plans,92.17
+BOOK-9,2024-02-29,Health issue,67.88
+BOOK-10,2024-01-14,Unforeseen circumstances,53.78
+BOOK-11,2024-03-08,Change in travel plans,79.23
+BOOK-12,2024-02-24,Health issue,61.92
+BOOK-13,2024-01-18,Booking mistake,54.76
+BOOK-14,2024-03-17,Emergency,88.63
+BOOK-15,2024-02-06,Change in travel plans,72.11
+BOOK-16,2024-01-09,Unforeseen circumstances,95.45
+BOOK-17,2024-03-01,Change in travel plans,83.29
+BOOK-18,2024-02-12,Unforeseen circumstances,69.14
+BOOK-19,2024-01-21,Health issue,77.86
+BOOK-20,2024-03-29,Change in travel plans,60.37
+BOOK-21,2024-02-03,Booking mistake,87.52
+BOOK-22,2024-01-26,Emergency,73.98
+BOOK-23,2024-02-18,Unforeseen circumstances,68.75
+BOOK-24,2024-01-03,Change in travel plans,94.63
+BOOK-25,2024-03-14,Health issue,76.24
+BOOK-26,2024-02-15,Change in travel plans,80.51
+BOOK-27,2024-01-28,Unforeseen circumstances,63.89
+BOOK-28,2024-03-23,Emergency,81.06
+BOOK-29,2024-02-02,Change in travel plans,59.18
+BOOK-30,2024-01-15,Health issue,90.72
+BOOK-31,2024-02-27,Unforeseen circumstances,75.39
+BOOK-32,2024-01-10,Change in travel plans,85.97
+BOOK-33,2024-03-07,Booking mistake,78.14
+BOOK-34,2024-02-20,Health issue,64.59
+BOOK-35,2024-01-25,Emergency,93.26
+BOOK-36,2024-03-19,Change in travel plans,57.83
+BOOK-37,2024-02-22,Unforeseen circumstances,79.68
+BOOK-38,2024-01-13,Booking mistake,72.75
+BOOK-39,2024-03-02,Health issue,86.41
+BOOK-40,2024-02-05,Emergency,61.28
+BOOK-41,2024-01-20,Change in travel plans,98.54
+BOOK-42,2024-03-13,Unforeseen circumstances,70.37
+BOOK-43,2024-02-08,Health issue,83.94
+BOOK-44,2024-01-31,Change in travel plans,75.52
+BOOK-45,2024-03-25,Booking mistake,57.16
+BOOK-46,2024-02-16,Emergency,92.63
+BOOK-47,2024-01-19,Change in travel plans,69.78
+BOOK-48,2024-03-06,Health issue,82.05
+BOOK-49,2024-02-25,Booking mistake,64.72
+BOOK-50,2024-01-29,Unforeseen circumstances,88.89
