@@ -1,3 +1,7 @@
+from flask import Flask ,jsonify,request
+
+app = Flask(__name__)
+
 import pandas as pd
 
 # Read the data from CSV
@@ -42,21 +46,34 @@ def probability_missing_train_B(train_ID1, train_ID2):
         return 0  # Return 0 if delay for Train A is not available
 
 # Take input of train_ID from user
-train_ID1 = int(input("Enter the first train ID: "))
-train_ID2 = int(input("Enter the second train ID: "))
+
+@app.route('/output')
+def output():
+    data=request.get_json()
+    l=data["D1"]
+    print (type(l))
+    print(l)
+    train_ID1 = l[0]
+    train_ID2 = l[1]
+    
 
 # Get expected delays
-expected_delay1 = estimate_delay(train_ID1)
-expected_delay2 = estimate_delay(train_ID2)
+    expected_delay1 = estimate_delay(train_ID1)
+    expected_delay2 = estimate_delay(train_ID2)
 
-# Calculate and print delays of both trains
-print(f"Delay of train ID {train_ID1}: {expected_delay1} minutes")
-print(f"Delay of train ID {train_ID2}: {expected_delay2} minutes")
+    # Calculate and print delays of both trains
+    print(f"Delay of train ID {train_ID1}: {expected_delay1} minutes")
+    print(f"Delay of train ID {train_ID2}: {expected_delay2} minutes")
 
-# Calculate and print expected probability
-expected_probability = probability_missing_train_B(train_ID1, train_ID2)
-print(f"Expected probability of missing train B: {expected_probability}%")
+    # Calculate and print expected probability
+    expected_probability = probability_missing_train_B(train_ID1, train_ID2)
+    print(f"Expected probability of missing train B: {expected_probability}%")
 
-# Calculate and print predicted probability (use train IDs for estimation)
-predicted_probability = probability_missing_train_B(train_ID1, train_ID2)
-print(f"Predicted probability of missing train B: {predicted_probability}%")
+    # Calculate and print predicted probability (use train IDs for estimation)
+    predicted_probability = probability_missing_train_B(train_ID1, train_ID2)
+    print(f"Predicted probability of missing train B: {predicted_probability}%")
+    output_l=[expected_delay1,expected_delay2,predicted_probability]
+    return output_l,200
+
+# if __name__=='__main__':
+#     app.run(debug=True,port=8000,use_reloader=True)
