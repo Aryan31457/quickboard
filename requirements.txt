@@ -1,4 +1,5 @@
 Flask
 Gunicorn
-pandas   # Library for data manipulation
+pandas  
+numpy
 
