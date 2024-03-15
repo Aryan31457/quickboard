@@ -5,7 +5,7 @@ app = Flask(__name__)
 import pandas as pd
 
 # Read the data from CSV
-data = pd.read_csv("C:/Users/aryan/OneDrive/Desktop/quickboard/TrainDelay-project-main/dataset/trains.csv")
+data = pd.read_csv("trains.csv")
 
 # Function to estimate delay for a given train
 def estimate_delay(train_ID):
