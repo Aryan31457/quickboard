@@ -1,5 +1,5 @@
 Flask
-Gunicorn
+gunicorn ==21.2.0
 pandas  
 numpy
 
