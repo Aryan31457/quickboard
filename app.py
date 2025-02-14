@@ -1,79 +1,53 @@
-from flask import Flask ,request
+from flask import Flask, request, jsonify
+import pandas as pd
+import os
 
 app = Flask(__name__)
 
-import pandas as pd
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(script_dir, "trains.csv")
 
-# Read the data from CSV
-data = pd.read_csv("trains.csv")
+try:
+    data = pd.read_csv(csv_path)
+    print("CSV Loaded Successfully!")
+except FileNotFoundError:
+    print(f"Error: CSV file not found at {csv_path}")
+    data = pd.DataFrame(columns=["train_ID", "delay"])
 
-# Function to estimate delay for a given train
 def estimate_delay(train_ID):
-    # Filter data for the given train ID
-    train_data = data[data['train_ID'] == train_ID]
-    
-    # If train data exists
+    train_data = data[data['train_ID'].astype(str) == str(train_ID)]
     if not train_data.empty:
-        # Filter out missing or invalid delay values
-        valid_delays = train_data['delay'].dropna()
-        if valid_delays.empty:
-            return 0  # Return 0 if no valid delays found
-        else:
-            # Calculate average delay
-            avg_delay = valid_delays.mean()
-            return max(0, avg_delay)  # Ensure delay is non-negative
-    else:
-        return 0  # Return 0 if train data not found
+        if 'delay' in train_data.columns:
+            valid_delays = train_data['delay'].dropna()
+            return max(0, valid_delays.mean()) if not valid_delays.empty else 0
+    return 0
 
-# Function to calculate probability of missing Train B
 def probability_missing_train_B(train_ID1, train_ID2):
-    # Estimate delay for Train A
     delay_train_A = estimate_delay(train_ID1)
-    
-    # If delay for Train A is available
-    if delay_train_A > 0:
-        # Estimate delay for Train B
-        delay_train_B = estimate_delay(train_ID2)
-        
-        # If delay for Train B is available
-        if delay_train_B > 0:
-            # Calculate the probability of missing Train B
-            percentage = ((delay_train_A - delay_train_B) / delay_train_A) * 100
-            return max(0, percentage)  # Ensure probability is non-negative
-        else:
-            return 0  # Return 0 if delay for Train B is not available
-    else:
-        return 0  # Return 0 if delay for Train A is not available
+    delay_train_B = estimate_delay(train_ID2)
+    if delay_train_A > 0 and delay_train_B > 0:
+        percentage = ((delay_train_A - delay_train_B) / delay_train_A) * 100
+        return max(0, percentage)
+    return 0
 
-# Take input of train_ID from user
-
-@app.route('/output')
+@app.route('/output', methods=['POST'])
 def output():
-    data=request.get_json()
-    l=data["D1"]
-    print (type(l))
-    print(l)
-    train_ID1 = l[0]
-    train_ID2 = l[1]
-    
+    try:
+        data = request.get_json()
+        if not data or "D1" not in data or not isinstance(data["D1"], list) or len(data["D1"]) < 2:
+            return jsonify({"error": "Invalid input. Expected JSON with 'D1' as a list of two train IDs."}), 400
+        train_ID1, train_ID2 = data["D1"][:2]
+        expected_delay1 = estimate_delay(train_ID1)
+        expected_delay2 = estimate_delay(train_ID2)
+        predicted_probability = probability_missing_train_B(train_ID1, train_ID2)
+        response = {
+            "train_ID1_delay": expected_delay1,
+            "train_ID2_delay": expected_delay2,
+            "probability_missing_train_B": predicted_probability
+        }
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-# Get expected delays
-    expected_delay1 = estimate_delay(train_ID1)
-    expected_delay2 = estimate_delay(train_ID2)
-
-    # Calculate and print delays of both trains
-    print(f"Delay of train ID {train_ID1}: {expected_delay1} minutes")
-    print(f"Delay of train ID {train_ID2}: {expected_delay2} minutes")
-
-    # Calculate and print expected probability
-    expected_probability = probability_missing_train_B(train_ID1, train_ID2)
-    print(f"Expected probability of missing train B: {expected_probability}%")
-
-    # Calculate and print predicted probability (use train IDs for estimation)
-    predicted_probability = probability_missing_train_B(train_ID1, train_ID2)
-    print(f"Predicted probability of missing train B: {predicted_probability}%")
-    output_l=[expected_delay1,expected_delay2,predicted_probability]
-    return output_l,200
-
-# if __name__=='__main__':
-#     app.run(debug=True,port=8000,use_reloader=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=8000)
